@@ -70,7 +70,7 @@ const Goals = () => {
     };
 
     return (
-        goals && (
+        goals && goals.length > 0 && (
             <Container maxWidth="xs" style={{ marginTop: '16px' }}>
                 <Typography align="center" variant="h4">
                     Goals
