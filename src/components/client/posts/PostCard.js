@@ -95,7 +95,9 @@ const PostCard = ({
     };
 
     const handleLike = () => {
-        Post.like(id, { like: !liked }).then(() => setLike(id, !liked));
+        let valueToSet = !liked;
+        setLike(id, valueToSet);
+        Post.like(id, { like: valueToSet }).catch(() => setLike(!valueToSet));
     };
 
     return (
