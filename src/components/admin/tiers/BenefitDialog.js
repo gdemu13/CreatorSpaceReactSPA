@@ -70,8 +70,13 @@ const BenefitDialog = ({
         });
     };
 
+    const handleClose = () => {
+        setBenefitsToAdd([]);
+        onClose();
+    };
+
     return (
-        <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="sm">
+        <Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth="sm">
             <DialogTitle>
                 <Box display="flex" alignItems="center">
                     <Typography variant="h4" style={{ flexGrow: 1 }}>

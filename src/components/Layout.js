@@ -97,12 +97,7 @@ const Layout = (props) => {
                             </Button>
                         </>
                     )}
-                    <IconButton onClick={props.toggleDarkMode} color="inherit">
-                        {props.isDarkMode ? <Brightness7 /> : <Brightness4 />}
-                    </IconButton>
-                    {authCtx.isLoggedIn && (
-                        <div>
-                            {authCtx.hasPermission([
+                    {authCtx.isLoggedIn && authCtx.hasPermission([
                                 SUPERUSER_ROLE,
                                 ADMIN_ROLE,
                             ]) && (
@@ -116,6 +111,11 @@ const Layout = (props) => {
                                     Add Post
                                 </Button>
                             )}
+                    <IconButton onClick={props.toggleDarkMode} color="inherit">
+                        {props.isDarkMode ? <Brightness7 /> : <Brightness4 />}
+                    </IconButton>
+                    {authCtx.isLoggedIn && (
+                        <div>
                             <IconButton
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"

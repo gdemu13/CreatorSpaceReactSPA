@@ -68,6 +68,7 @@ const PostForm = () => {
         initialValues: {
             title: '',
             type: 1,
+            teaserText: '',
             text: '',
             accessType: '1',
             images: [],
@@ -251,6 +252,48 @@ const PostForm = () => {
                             <QuillContainer>
                                 <ReactQuill
                                     theme="snow"
+                                    name="teaserText"
+                                    id="teaserText"
+                                    modules={{
+                                        toolbar: [
+                                            [
+                                                'bold',
+                                                'italic',
+                                                'underline',
+                                                'strike',
+                                                'blockquote',
+                                            ],
+                                            [
+                                                { 'header': 1 },
+                                                { 'header': 2 },
+                                                'code-block',
+                                            ],
+                                            [
+                                                { 'list': 'ordered' },
+                                                { 'list': 'bullet' },
+                                                { 'indent': '-1' },
+                                                { 'indent': '+1' },
+                                            ],
+                                            ['clean'],
+                                        ],
+                                        clipboard: {
+                                            matchVisual: false,
+                                        },
+                                    }}
+                                    placeholder="Enter teaser text"
+                                    value={formik.values.teaserText || ''}
+                                    onChange={(content) =>
+                                        formik.setFieldValue(
+                                            'teaserText',
+                                            content
+                                        )
+                                    }
+                                />
+                            </QuillContainer>
+
+                            <QuillContainer>
+                                <ReactQuill
+                                    theme="snow"
                                     name="text"
                                     id="text"
                                     modules={{
@@ -282,7 +325,7 @@ const PostForm = () => {
                                     placeholder="Enter text"
                                     value={formik.values.text || ''}
                                     onChange={(content) =>
-                                        formik.handleChange('text')(content)
+                                        formik.setFieldValue('text', content)
                                     }
                                 />
                             </QuillContainer>

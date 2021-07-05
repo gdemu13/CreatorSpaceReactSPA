@@ -68,7 +68,6 @@ const CompanyForm = () => {
             name: '',
             creationName: '',
             description: '',
-            introVideoUrl: '',
             facebookUrl: '',
             instagramUrl: '',
             twitterUrl: '',
@@ -177,32 +176,21 @@ const CompanyForm = () => {
                                     modules={QuillConfig}
                                     placeholder="Enter description"
                                     value={formik.values.description || ''}
-                                    onChange={(content) =>
-                                        formik.handleChange('description')(
-                                            content
-                                        )
-                                    }
+                                    onChange={(
+                                        content,
+                                        delta,
+                                        source,
+                                        editor
+                                    ) => {
+                                        formik.setFieldValue(
+                                            'description',
+                                            editor.getText().trim().length == 0
+                                                ? null
+                                                : content
+                                        );
+                                    }}
                                 />
                             </QuillContainer>
-
-                            <TextField
-                                error={Boolean(
-                                    formik.touched.introVideoUrl &&
-                                        formik.errors.introVideoUrl
-                                )}
-                                fullWidth
-                                helperText={
-                                    formik.touched.introVideoUrl &&
-                                    formik.errors.introVideoUrl
-                                }
-                                label="Intro Video URL"
-                                margin="normal"
-                                name="introVideoUrl"
-                                onBlur={formik.handleBlur}
-                                onChange={formik.handleChange}
-                                value={formik.values.introVideoUrl || ''}
-                                variant="outlined"
-                            />
 
                             <Box
                                 mt={2}
@@ -291,7 +279,7 @@ const CompanyForm = () => {
                                         ref={coverImgRef}
                                         src={
                                             formik.values.coverPhotoUrl ||
-                                            '/static/defaultCover.jpg'
+                                            '/static/defaultcover.jpg'
                                         }
                                         onClick={() =>
                                             coverInputRef.current.click()

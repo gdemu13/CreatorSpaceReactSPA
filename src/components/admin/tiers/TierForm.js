@@ -60,7 +60,6 @@ const TierForm = (props) => {
     const [loading, setLoading] = useState(id ? true : false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [benefits, setBenefits] = useState([]);
-    const [benefitCategories, setBenefitCategories] = useState(null);
     const [benefitDialogOpen, setBenefitDialogOpen] = useState(false);
     const [benefitFormDialogOpen, setBenefitFormDialogOpen] = useState(false);
     const [benefitToEdit, setBenefitToEdit] = useState(null);
@@ -114,7 +113,7 @@ const TierForm = (props) => {
     const addBenefits = (newBenefits) => {
         formik.setFieldValue('benefits', [
             ...formik.values.benefits,
-            ...newBenefits,
+            ...benefits.filter((x) => newBenefits.some((n) => n.id === x.id)),
         ]);
         setBenefitDialogOpen(false);
     };
@@ -125,7 +124,6 @@ const TierForm = (props) => {
                 formik.resetForm({ values: data.tier });
             }
             setBenefits(data.benefits);
-            setBenefitCategories(data.benefitCategories);
             setLoading(false);
         });
     }, []);
@@ -389,7 +387,6 @@ const TierForm = (props) => {
                     isOpen={benefitDialogOpen}
                     onClose={() => setBenefitDialogOpen(false)}
                     benefits={notAddedBenefits}
-                    benefitCategories={benefitCategories}
                     onConfirm={addBenefits}
                     onAddNew={() => setBenefitFormDialogOpen(true)}
                     onEdit={(benefit) => {

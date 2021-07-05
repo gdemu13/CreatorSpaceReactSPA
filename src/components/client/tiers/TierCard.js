@@ -35,9 +35,10 @@ const TierCard = ({
                 <Typography color="textSecondary">
                     ${price} per month
                 </Typography>
-                <Box mt={4} display="flex" justifyContent="center">
+                {imageUrl && 
+                (<Box mt={4} display="flex" justifyContent="center">
                     <TierImage src={imageUrl} />
-                </Box>
+                </Box>)}
                 <Box
                     mt={2}
                     dangerouslySetInnerHTML={{ __html: description }}

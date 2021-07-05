@@ -168,18 +168,24 @@ const PostCard = ({
                 {dateCreated}
             </Link>
             {locked && (
-                <LockedPostBackground>
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        size="large"
-                        startIcon={<LockOpen />}
-                        component={RouterLink}
-                        to="/subscription"
-                    >
-                        Unlock for ${minimumTierPrice}/month
-                    </Button>
-                </LockedPostBackground>
+                <>
+                    <Box
+                        mt={2}
+                        dangerouslySetInnerHTML={{ __html: teaserText }}
+                    ></Box>
+                    <LockedPostBackground>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            size="large"
+                            startIcon={<LockOpen />}
+                            component={RouterLink}
+                            to="/subscription"
+                        >
+                            Unlock for ${minimumTierPrice}/month
+                        </Button>
+                    </LockedPostBackground>
+                </>
             )}
             {!locked && (
                 <>

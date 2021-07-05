@@ -29,6 +29,7 @@ export const QuillContainer = styled.div`
     .ql-toolbar.ql-snow {
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
+        background-color: #fff;
     }
 
     .ql-container.ql-snow {
