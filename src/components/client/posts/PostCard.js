@@ -284,7 +284,9 @@ const PostCard = ({
             <Box
                 mt={2}
                 display="flex"
-                justifyContent={locked ? 'flex-end' : 'space-between'}
+                justifyContent={
+                    locked || !authCtx.isLoggedIn ? 'flex-end' : 'space-between'
+                }
                 alignItems="center"
             >
                 {!locked && authCtx.isLoggedIn && (
