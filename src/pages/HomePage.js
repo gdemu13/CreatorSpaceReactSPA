@@ -3,7 +3,13 @@ import Goals from '../components/client/goals/Goals';
 import Posts from '../components/client/posts/Posts';
 import Tiers from '../components/client/tiers/Tiers';
 import styled from 'styled-components';
-import { Container, IconButton, Typography, Link, Paper } from '@material-ui/core';
+import {
+    Container,
+    IconButton,
+    Typography,
+    Link,
+    Paper,
+} from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { Company } from '../api/service';
 import { Facebook, Instagram, Twitter, YouTube } from '@material-ui/icons';
@@ -80,13 +86,7 @@ const DescriptionContainer = styled(Paper)`
     padding: 16px;
 `;
 
-const HomePage = () => {
-    const [settings, setSettings] = useState(null);
-
-    useEffect(() => {
-        Company.get().then((data) => setSettings(data));
-    }, []);
-
+const HomePage = ({ settings }) => {
     return (
         <>
             <Helmet>
@@ -165,10 +165,16 @@ const HomePage = () => {
             )}
             <Tiers />
             <Goals />
-            {settings && !!settings.description && <Container maxWidth="sm" style={{marginTop: '16px'}}>
-                <DescriptionContainer variant="outlined" dangerouslySetInnerHTML={{__html: settings.description}}>
-                </DescriptionContainer>
-            </Container>}
+            {settings && !!settings.description && (
+                <Container maxWidth="sm" style={{ marginTop: '16px' }}>
+                    <DescriptionContainer
+                        variant="outlined"
+                        dangerouslySetInnerHTML={{
+                            __html: settings.description,
+                        }}
+                    ></DescriptionContainer>
+                </Container>
+            )}
             <Posts />
         </>
     );

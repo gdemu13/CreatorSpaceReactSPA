@@ -97,20 +97,18 @@ const Layout = (props) => {
                             </Button>
                         </>
                     )}
-                    {authCtx.isLoggedIn && authCtx.hasPermission([
-                                SUPERUSER_ROLE,
-                                ADMIN_ROLE,
-                            ]) && (
-                                <Button
-                                    color="inherit"
-                                    size="large"
-                                    startIcon={<Add />}
-                                    component={Link}
-                                    to="/posts/add"
-                                >
-                                    Add Post
-                                </Button>
-                            )}
+                    {authCtx.isLoggedIn &&
+                        authCtx.hasPermission([SUPERUSER_ROLE, ADMIN_ROLE]) && (
+                            <Button
+                                color="inherit"
+                                size="large"
+                                startIcon={<Add />}
+                                component={Link}
+                                to="/posts/add"
+                            >
+                                Add Post
+                            </Button>
+                        )}
                     <IconButton onClick={props.toggleDarkMode} color="inherit">
                         {props.isDarkMode ? <Brightness7 /> : <Brightness4 />}
                     </IconButton>
@@ -180,7 +178,6 @@ const Layout = (props) => {
             <LayoutWrapper>
                 <LayoutContainer>
                     <LayoutContent>{props.children}</LayoutContent>
-                    <Spinner />
                 </LayoutContainer>
             </LayoutWrapper>
         </LayoutRoot>

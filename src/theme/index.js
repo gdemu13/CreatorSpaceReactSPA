@@ -2,14 +2,14 @@ import { createMuiTheme, colors } from '@material-ui/core';
 import shadows from './shadows';
 import typography from './typography';
 
-const themeBuilder = (dark) =>
+const themeBuilder = (dark, color) =>
     createMuiTheme({
         palette: dark
             ? {
                   type: 'dark',
                   primary: {
                       main: '#ffffff',
-                      contrastText: '#004dff',
+                      contrastText: color,
                   },
               }
             : {
@@ -19,7 +19,7 @@ const themeBuilder = (dark) =>
                   },
                   primary: {
                       contrastText: '#ffffff',
-                      main: '#004dff',
+                      main: color,
                   },
                   text: {
                       primary: '#172b4d',

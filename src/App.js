@@ -2,7 +2,7 @@ import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 import { ThemeProvider } from 'styled-components';
 import { useContext, useEffect, useState } from 'react';
 import AuthContext from './store/auth-context';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -21,18 +21,40 @@ import SubscriptionPage from './pages/SubscriptionPage';
 import ThemeContext from './store/theme-context';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import ReactGa from 'react-ga';
+import { Company } from './api/service';
+import useLocationChange from './hooks/useLocationChange';
 
 function App() {
     const authCtx = useContext(AuthContext);
     const themeCtx = useContext(ThemeContext);
     const [theme, setTheme] = useState(null);
+    const [settings, setSettings] = useState(null);
 
     useEffect(() => {
-        setTheme(themeBuilder(themeCtx.isDarkMode));
-    }, [themeCtx.isDarkMode]);
+        Company.get().then((data) => {
+            setSettings(data);
+            themeCtx.setColor(data.color);
+            if (!!data.googleAnalyticsId) {
+                ReactGa.initialize(data.googleAnalyticsId);
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        if (!!themeCtx.color) {
+            setTheme(themeBuilder(themeCtx.isDarkMode, themeCtx.color));
+        }
+    }, [themeCtx.isDarkMode, themeCtx.color]);
+
+    useLocationChange((location) => {
+        ReactGa.set({ page: location.pathname });
+        ReactGa.pageview(location.pathname);
+    });
 
     return (
-        theme && (
+        theme &&
+        settings && (
             <MuiThemeProvider theme={theme}>
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
@@ -42,7 +64,7 @@ function App() {
                     >
                         <Switch>
                             <Route path="/" exact>
-                                <HomePage />
+                                <HomePage settings={settings} />
                             </Route>
 
                             <PrivateRoute

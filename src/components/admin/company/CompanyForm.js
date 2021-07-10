@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {
@@ -7,6 +7,9 @@ import {
     FormHelperText,
     TextField,
     Typography,
+    InputAdornment,
+    IconButton,
+    Popover,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { Helmet } from 'react-helmet';
@@ -18,6 +21,9 @@ import { QuillConfig, QuillContainer } from '../../common/QuillConfig';
 import { Company } from '../../../api/service';
 import { objTOFormData } from '../../../utils';
 import { FormContainer } from '../../common/styles';
+import { Colorize } from '@material-ui/icons';
+import { HexColorPicker } from 'react-colorful';
+import ThemeContext from '../../../store/theme-context';
 
 const ProfilePhoto = styled.img`
     border-radius: 50%;
@@ -54,6 +60,12 @@ const UploadTextOverlay = styled.div`
     }
 `;
 
+const StyledPopover = styled(Popover)`
+    .MuiPopover-paper {
+        overflow: hidden !important;
+    }
+`;
+
 const CompanyForm = () => {
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [error, setError] = useState('');
@@ -62,12 +74,27 @@ const CompanyForm = () => {
     const profileImgRef = useRef(null);
     const coverInputRef = useRef(null);
     const coverImgRef = useRef(null);
+    const themeCtx = useContext(ThemeContext);
+
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleColorPickerClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleColorPickerClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     const formik = useFormik({
         initialValues: {
             name: '',
             creationName: '',
             description: '',
+            googleAnalyticsId: '',
             facebookUrl: '',
             instagramUrl: '',
             twitterUrl: '',
@@ -77,10 +104,12 @@ const CompanyForm = () => {
         },
         validationSchema: Yup.object({
             name: Yup.string().required('name is required'),
+            creationName: Yup.string().required('creation name is required'),
         }),
         onSubmit: (values) => {
             Company.update(objTOFormData(values))
-                .then((_) => {
+                .then(() => {
+                    themeCtx.setColor(values.color);
                     setShowSuccessAlert(true);
                 })
                 .catch((error) => {
@@ -287,6 +316,88 @@ const CompanyForm = () => {
                                     />
                                 </Box>
                             </Box>
+
+                            <TextField
+                                error={Boolean(
+                                    formik.touched.googleAnalyticsId &&
+                                        formik.errors.googleAnalyticsId
+                                )}
+                                fullWidth
+                                helperText={
+                                    formik.touched.googleAnalyticsId &&
+                                    formik.errors.googleAnalyticsId
+                                }
+                                label="Google Analytics ID"
+                                margin="normal"
+                                name="googleAnalyticsId"
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                value={formik.values.googleAnalyticsId || ''}
+                                variant="outlined"
+                            />
+
+                            <TextField
+                                error={Boolean(
+                                    formik.touched.color && formik.errors.color
+                                )}
+                                fullWidth
+                                helperText={
+                                    formik.touched.color && formik.errors.color
+                                }
+                                label="Theme color"
+                                margin="normal"
+                                name="color"
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                value={formik.values.color || ''}
+                                variant="outlined"
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="start">
+                                            <div>
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    edge="end"
+                                                    onClick={
+                                                        handleColorPickerClick
+                                                    }
+                                                >
+                                                    <Colorize />
+                                                </IconButton>
+
+                                                <StyledPopover
+                                                    id={id}
+                                                    open={open}
+                                                    anchorEl={anchorEl}
+                                                    onClose={
+                                                        handleColorPickerClose
+                                                    }
+                                                    anchorOrigin={{
+                                                        vertical: 'bottom',
+                                                        horizontal: 'center',
+                                                    }}
+                                                    transformOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'center',
+                                                    }}
+                                                >
+                                                    <HexColorPicker
+                                                        color={
+                                                            formik.values.color
+                                                        }
+                                                        onChange={(color) =>
+                                                            formik.setFieldValue(
+                                                                'color',
+                                                                color
+                                                            )
+                                                        }
+                                                    />
+                                                </StyledPopover>
+                                            </div>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
 
                             <Box mt={4}>
                                 <Typography color="textPrimary" variant="h4">

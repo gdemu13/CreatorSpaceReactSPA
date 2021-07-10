@@ -32,9 +32,9 @@ export const Loader = styled.span`
         margin-top: -8px;
         margin-left: -8px;
         border-radius: 50%;
-        border: 2px solid ${(props) => props.theme.palette.primary.main};
+        border: 2px solid #004dff;
         border-top-color: transparent;
-        border-right-color: ${(props) => props.theme.palette.primary.main};
+        border-right-color: #004dff;
         border-bottom-color: transparent;
         animation: ${spin} 2s linear infinite;
     }
