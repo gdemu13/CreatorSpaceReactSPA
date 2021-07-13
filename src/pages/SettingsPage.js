@@ -1,4 +1,5 @@
 import { Container, Tab, Tabs, Box } from '@material-ui/core';
+import { useContext } from 'react';
 import {
     Link,
     useLocation,
@@ -14,6 +15,8 @@ import AddUser from '../components/admin/team/AddUser';
 import Team from '../components/admin/team/Team';
 import TierForm from '../components/admin/tiers/TierForm';
 import Tiers from '../components/admin/tiers/Tiers';
+import { SUPERUSER_ROLE } from '../constants';
+import AuthContext from '../store/auth-context';
 
 const RootContainer = styled.div`
     display: flex;
@@ -30,6 +33,7 @@ const StyledTabs = styled(Tabs)`
 `;
 
 const Settings = () => {
+    const authCtx = useContext(AuthContext);
     const match = useRouteMatch();
     const location = useLocation();
 
@@ -62,12 +66,14 @@ const Settings = () => {
                         value={`${match.url}`}
                         to={`${match.url}`}
                     />
-                    <Tab
-                        label="Team"
-                        component={Link}
-                        value={`${teamMatch?.url}`}
-                        to={`${match.url}/team`}
-                    />
+                    {authCtx.hasPermission([SUPERUSER_ROLE]) && (
+                        <Tab
+                            label="Team"
+                            component={Link}
+                            value={`${teamMatch?.url}`}
+                            to={`${match.url}/team`}
+                        />
+                    )}
                     <Tab
                         label="Tiers"
                         component={Link}
