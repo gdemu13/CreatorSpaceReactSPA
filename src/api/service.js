@@ -9,6 +9,10 @@ export const Account = {
     sendPasswordRecoveryEmail: (body) =>
         requests.post('/Account/SendPasswordRecoveryEmail', body),
     resetPassword: (body) => requests.post('/Account/ResetPassword', body),
+    addTeamUser: (body) => requests.post('/Account/AddTeamUser', body),
+    getTeamUsers: () => requests.get('/Account/GetTeamUsers'),
+    deleteTeamUser: (email) =>
+        requests.del('/Account/DeleteTeamUser', {}, { email: email }),
 };
 
 export const Company = {

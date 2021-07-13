@@ -10,8 +10,18 @@ import styled from 'styled-components';
 import CompanyForm from '../components/admin/company/CompanyForm';
 import GoalForm from '../components/admin/goals/GoalForm';
 import Goals from '../components/admin/goals/Goals';
+import AddUser from '../components/admin/team/AddUser';
+import Team from '../components/admin/team/Team';
 import TierForm from '../components/admin/tiers/TierForm';
 import Tiers from '../components/admin/tiers/Tiers';
+
+const RootContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    ${(props) => props.theme.breakpoints.up('md')} {
+        flex-direction: row;
+    }
+`;
 
 const StyledTabs = styled(Tabs)`
     .MuiTab-wrapper {
@@ -35,9 +45,11 @@ const Settings = () => {
         '/settings/tiers',
     ]);
 
+    const teamMatch = useRouteMatch(['/settings/team/add', '/settings/team']);
+
     return (
         <Container maxWidth="xl">
-            <Box display="flex" flexDirection="row">
+            <RootContainer>
                 <StyledTabs
                     orientation="vertical"
                     indicatorColor="primary"
@@ -49,6 +61,12 @@ const Settings = () => {
                         component={Link}
                         value={`${match.url}`}
                         to={`${match.url}`}
+                    />
+                    <Tab
+                        label="Team"
+                        component={Link}
+                        value={`${teamMatch?.url}`}
+                        to={`${match.url}/team`}
                     />
                     <Tab
                         label="Tiers"
@@ -68,11 +86,17 @@ const Settings = () => {
                         <Route path={match.path} exact>
                             <CompanyForm />
                         </Route>
+                        <Route path={`${match.path}/team`} exact>
+                            <Team />
+                        </Route>
                         <Route path={`${match.path}/tiers`} exact>
                             <Tiers />
                         </Route>
                         <Route path={`${match.path}/goals`} exact>
                             <Goals />
+                        </Route>
+                        <Route path={`${match.path}/team/add`} exact>
+                            <AddUser />
                         </Route>
                         <Route path={`${match.path}/goals/add`} exact>
                             <GoalForm />
@@ -88,7 +112,7 @@ const Settings = () => {
                         </Route>
                     </Switch>
                 </Box>
-            </Box>
+            </RootContainer>
         </Container>
     );
 };

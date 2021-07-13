@@ -67,8 +67,10 @@ const requests = {
     put: (url, body, headers = {}) => {
         return ax.put(url, body, { headers: headers }).then(responseBody);
     },
-    del: (url, headers = {}) => {
-        return ax.delete(url, { headers: headers }).then(responseBody);
+    del: (url, headers = {}, data) => {
+        return ax
+            .delete(url, { headers: headers, data: data })
+            .then(responseBody);
     },
 };
 
